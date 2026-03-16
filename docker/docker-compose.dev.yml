@@ -3,13 +3,14 @@
 # Tor runs inside the same container for onion monitoring.
 # No .env file by default. To add Discord/Telegram/proxy, use docker-compose.example.yml
 # or add env_file: ../.env and create .env from docker/env.example.
-# Run from repo root: docker compose -f docker/docker-compose.yml up -d --build
+# Run from repo root: docker compose -f docker/docker-compose.dev.yml up -d --build
 
 services:
   fbi-watchdog:
+    # context/dockerfile are relative to repo root; run compose from repo root
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     container_name: fbi-watchdog
     restart: unless-stopped
     environment:

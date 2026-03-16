@@ -9,7 +9,7 @@ services:
   fbi-watchdog:
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     container_name: fbi-watchdog
     restart: unless-stopped
     environment:
