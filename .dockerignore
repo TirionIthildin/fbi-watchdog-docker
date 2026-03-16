@@ -1,0 +1,28 @@
+# Git and env
+.git
+.gitignore
+.env
+*.env
+!env.example
+
+# State and runtime (persisted via volume in compose)
+*_results.json
+event_feed.json
+monitored_sites.json
+screenshots/
+
+# Python
+__pycache__
+*.pyc
+.venv
+venv
+
+# IDE and OS
+.vscode
+.idea
+.DS_Store
+
+# Docs (optional; keep if you want them in image)
+# README.md
+# LICENSE
+# screenshots/

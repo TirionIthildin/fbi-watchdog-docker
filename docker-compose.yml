@@ -1,0 +1,22 @@
+# FBI Watchdog - Docker Compose
+# Builds the image, mounts a data volume for state/screenshots/monitored_sites.
+# Tor runs inside the same container for onion monitoring.
+
+services:
+  fbi-watchdog:
+    build: .
+    container_name: fbi-watchdog
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - FBI_WATCHDOG_DATA_DIR=/app/data
+      - CLEARNET_PROXY=${CLEARNET_PROXY:-}
+    volumes:
+      # Persist state, event feed, screenshots, and monitored_sites.json
+      - watchdog-data:/app/data
+    # Default: run headless with one silent cycle; override with compose run
+    command: ["python3", "fbi_watchdog.py", "--no-menu", "--silent"]
+
+volumes:
+  watchdog-data:

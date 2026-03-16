@@ -33,13 +33,15 @@ logging.getLogger("whois.whois").setLevel(logging.CRITICAL)
 console = Console()
 
 VERSION = "3.0.0"
-STATE_FILE = Path("fbi_watchdog_results.json")
-ONION_STATE_FILE = Path("onion_watchdog_results.json")
-HTTP_STATE_FILE = Path("http_watchdog_results.json")
-WHOIS_STATE_FILE = Path("whois_watchdog_results.json")
-IP_STATE_FILE = Path("ip_watchdog_results.json")
-SCREENSHOT_DIR = Path("screenshots")
-SCREENSHOT_DIR.mkdir(exist_ok=True)
+# Optional base dir for state/screenshots/sites (e.g. Docker volume). Defaults to current directory.
+_DATA_DIR = Path(os.environ.get("FBI_WATCHDOG_DATA_DIR", ".")).resolve()
+STATE_FILE = _DATA_DIR / "fbi_watchdog_results.json"
+ONION_STATE_FILE = _DATA_DIR / "onion_watchdog_results.json"
+HTTP_STATE_FILE = _DATA_DIR / "http_watchdog_results.json"
+WHOIS_STATE_FILE = _DATA_DIR / "whois_watchdog_results.json"
+IP_STATE_FILE = _DATA_DIR / "ip_watchdog_results.json"
+SCREENSHOT_DIR = _DATA_DIR / "screenshots"
+SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
 
 DNS_RECORDS = ["A", "AAAA", "CNAME", "MX", "NS", "TXT"]
 DNS_TIMEOUT = 5
@@ -143,8 +145,8 @@ CHALLENGE_KEYWORDS = [
     "hcaptcha", "recaptcha", "turnstile",
 ]
 
-SITES_FILE = Path("monitored_sites.json")
-EVENT_FEED_FILE = Path("event_feed.json")
+SITES_FILE = _DATA_DIR / "monitored_sites.json"
+EVENT_FEED_FILE = _DATA_DIR / "event_feed.json"
 EVENT_FEED_MAX = 500
 
 
