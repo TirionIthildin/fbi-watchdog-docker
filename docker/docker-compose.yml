@@ -1,0 +1,24 @@
+# FBI Watchdog - Docker Compose
+# Builds the image, mounts a data volume for state/screenshots/monitored_sites.
+# Tor runs inside the same container for onion monitoring.
+# No .env file by default. To add Discord/Telegram/proxy, use docker-compose.example.yml
+# or add env_file: ../.env and create .env from docker/env.example.
+# Run from repo root: docker compose -f docker/docker-compose.yml up -d --build
+
+services:
+  fbi-watchdog:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: fbi-watchdog
+    restart: unless-stopped
+    environment:
+      - FBI_WATCHDOG_DATA_DIR=/app/data
+    volumes:
+      # Persist state, event feed, screenshots, and monitored_sites.json
+      - watchdog-data:/app/data
+    # Default: run headless with one silent cycle; override with compose run
+    command: ["python3", "fbi_watchdog.py", "--no-menu", "--silent"]
+
+volumes:
+  watchdog-data:
