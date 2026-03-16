@@ -1,0 +1,33 @@
+# FBI Watchdog - Docker Compose example with all environment options
+# Optional: use this as reference, or copy to docker-compose.override.yml to set
+# Discord/Telegram/proxy. To use a .env file instead, add: env_file: [../.env]
+# Run from repo root: docker compose -f docker/docker-compose.yml up -d --build
+
+services:
+  fbi-watchdog:
+    image: ghcr.io/darkwebinformer/fbi-watchdog:latest
+    # build:
+    #   context: ..
+    #   dockerfile: docker/Dockerfile
+    container_name: fbi-watchdog
+    restart: unless-stopped
+    # env_file:
+    #   - ../.env
+    environment:
+      # Data directory inside the container (default for this setup)
+      - FBI_WATCHDOG_DATA_DIR=/app/data
+      # Discord webhook URL (optional) - or set in .env
+      - WEBHOOKFBIWATCHDOG=${WEBHOOKFBIWATCHDOG:-}
+      # Telegram bot token (optional) - or set in .env
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      # Telegram chat/channel ID (optional) - or set in .env
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      # SOCKS5 proxy for clearnet requests (optional) - or set in .env
+      # Example: socks5h://127.0.0.1:1080
+      - CLEARNET_PROXY=${CLEARNET_PROXY:-}
+    volumes:
+      - watchdog-data:/app/data
+    command: ["python3", "fbi_watchdog.py", "--no-menu", "--silent"]
+
+volumes:
+  watchdog-data:

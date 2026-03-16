@@ -24,7 +24,7 @@ COPY env.example ./env.example
 COPY monitored_sites.example.json ./monitored_sites.example.json
 
 # Entrypoint: start Tor, then run the watchdog
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
